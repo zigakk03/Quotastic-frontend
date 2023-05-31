@@ -1,8 +1,12 @@
 import React from 'react'
+import Footer from '../layouts/Footer'
 
 function Home() {
   return (
-    <div>Home</div>
+    <div>
+      Home
+      <Footer />
+    </div>
   )
 }
 
