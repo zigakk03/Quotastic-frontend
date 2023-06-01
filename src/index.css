@@ -1,0 +1,43 @@
+body,
+html {
+    font-family: 'Raleway', sans-serif;
+}
+
+h1 {
+    font-weight: 300;
+    font-size: 98px;
+}
+
+h2 {
+    font-weight: 300;
+    font-size: 61px;
+}
+
+h3 {
+    font-weight: 400;
+    font-size: 49px;
+}
+
+h4 {
+    font-weight: 400;
+    font-size: 35px;
+}
+
+h5 {
+    font-weight: 400;
+    font-size: 24px;
+}
+
+p {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+p b {
+    font-weight: 700;
+}
+
+p .small {
+    font-weight: 400;
+    font-size: 12px;
+}
