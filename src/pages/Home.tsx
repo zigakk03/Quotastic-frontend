@@ -1,9 +1,11 @@
 import React from 'react'
 import Footer from '../layouts/Footer'
+import Navbar from '../layouts/Navbar'
 
 function Home() {
   return (
     <div>
+      <Navbar />
       <h1>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti, corrupti!</h1>
       <h2>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti, corrupti!</h2>
       <h3>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti, corrupti!</h3>
