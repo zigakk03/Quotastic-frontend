@@ -3,7 +3,8 @@ import Footer from '../layouts/Footer';
 import NavbarLogin from '../layouts/Navbar-login';
 import { Link, useNavigate } from 'react-router-dom';
 import Axios from 'axios'
-import {setGlobalState} from '../containers/userInfo'
+import Cookies from 'js-cookie';
+
 
 function Login() {
   
@@ -26,16 +27,23 @@ function Login() {
       },
       withCredentials: true,
       }).then((response) => {
-        setGlobalState('id', response.data.id)
-        setGlobalState('first_name', response.data.first_name)
-        setGlobalState('last_name', response.data.last_name)
-        setGlobalState('email', response.data.email)
-        setGlobalState('avatar', response.data.avatar)
+        const user = {
+          id: response.data.id,
+          first_name: response.data.first_name,
+          last_name: response.data.last_name,
+          email: response.data.email,
+          avatar: response.data.avatar,
+        }
+
+        Cookies.set('user_info', JSON.stringify(user))
       })
 
       navigate('/', {replace: true})
     } catch (error) {
       setAuthErr(true);
+      setTimeout(() => {
+        setAuthErr(false);
+      }, 5000);
     }
   }
 

@@ -1,8 +1,77 @@
+import Axios from 'axios'
+import Cookies from 'js-cookie'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function Navbar() {
+  const [userSigneIn, setUserSigneIn] = useState(false)
+  const [avatar, setAvatar] = useState('')
+  const [isImage, setIsImage] = useState(false)
+  const [username, setUsername] = useState('')
+  const [logoutError, setLogoutError] = useState(false)
+
+  const logoutUser = async () => {
+    try {
+      await Axios.post(
+        'http://localhost:8080/signout',
+        undefined,
+        {withCredentials: true}
+      )
+      Cookies.remove('user_info')
+      window.location.reload()
+    } catch (error) {
+      setLogoutError(true)
+      setTimeout(() => {
+        setLogoutError(false);
+      }, 5000);
+    }
+  }
+
+  useEffect(() => {
+    const user_cookie = Cookies.get('user_info')
+    
+    if (user_cookie) {
+      setUserSigneIn(true)
+
+      const first_name = JSON.parse(user_cookie).first_name
+      const last_name = JSON.parse(user_cookie).last_name
+
+      if (first_name === '' || first_name === null || last_name === '' || last_name === null) {
+        setUsername(JSON.parse(user_cookie).email)
+      } else {
+        setUsername(`${first_name} ${last_name}`)
+      }
+
+      const avatar = JSON.parse(user_cookie).avatar
+      if (avatar !== null) {
+        const img = new Image();
+        img.src = `http://localhost:8080/files/${avatar}`;
+    
+        img.onload = () => {
+          setIsImage(true);
+          setAvatar(`http://localhost:8080/files/${avatar}`);
+        };
+    
+        img.onerror = () => {
+          setIsImage(false);
+        };
+      };
+    } else {
+      setUserSigneIn(false)
+    }
+  }, [])
+  
+
   return (
     <>
+    {
+      logoutError ? 
+      <div className="alert alert-danger" role="alert">
+        Something went wrong! Try reloading the page.
+      </div>
+      :
+      <></>
+    }
 
 {/* other devices */}
     <div className="d-none d-md-block">
@@ -13,12 +82,45 @@ function Navbar() {
           </Link>
           <div className="navbar" id="navbarNav">
             <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link to='/register' className='btn rounded-pill px-5 shadow' style={{backgroundColor: '#DE8667', color: 'white'}}>Sign up</Link>
-              </li>
-              <li className="nav-item">
-                <Link to='/login' className='btn border-2 rounded-pill ms-4 px-5 shadow' style={{borderColor: '#EFB467', color: '#EFB467'}}>Login</Link>
-              </li>
+              {userSigneIn 
+              ? 
+              <>
+                <li className="nav-item pt-2">
+                  <Link to='/' className='me-3' style={{textDecoration: 'none', color: '#DE8667'}}>Home</Link>
+                </li>
+                <li className="nav-item pt-2">
+                  <Link to='/' className='me-3' style={{textDecoration: 'none', color: '#DE8667'}}>Settings</Link>
+                </li>
+                <li className="nav-item pt-2">
+                  <Link to='/' onClick={logoutUser} className='me-4' style={{textDecoration: 'none', color: '#DE8667'}}>Logout</Link>
+                </li>
+                <li className="nav-item">
+                  {
+                  isImage ?
+                  <img src={avatar} alt="Avatar" className='rounded-circle me-1' style={{width: '40px', height: '40px'}} />
+                  :
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-person-circle me-1" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                  </svg>
+                  }
+                </li>
+                <li className="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
+                  <path color='#DE8667' d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+                </li>
+              </>
+              :
+              <>
+                <li className="nav-item">
+                  <Link to='/register' className='btn rounded-pill px-5 shadow' style={{backgroundColor: '#DE8667', color: 'white'}}>Sign up</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to='/login' className='btn border-2 rounded-pill ms-4 px-5 shadow' style={{borderColor: '#EFB467', color: '#EFB467'}}>Login</Link>
+                </li>
+              </>
+              }
             </ul>
           </div>
         </div>
@@ -63,6 +165,105 @@ function Navbar() {
             </div>
             <div className="offcanvas-body">
               <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
+                {userSigneIn
+                ?
+                <>
+                  <li className="nav-item d-flex conainer-fluid ps-4 mb-4">
+                  {
+                    isImage ?
+                    <img src={avatar} alt="Avatar" className='rounded-circle me-4' style={{width: '40px', height: '40px'}} />
+                    :
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-person-circle me-4" viewBox="0 0 16 16">
+                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                      <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                    </svg>
+                  }
+                  <h5 className='pt-1'>{username}</h5>
+                  </li>
+
+                  <li className="nav-item mb-4">
+                  <Link to='/' style={{textDecoration: 'none', color: 'black'}}>
+                  <div
+                    className="d-flex justify-content-between align-items-center ms-4"
+                  >
+                    <h5 className='pt-1'>
+                      Home
+                    </h5>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-chevron-right"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        stroke="black"
+                        strokeWidth="1"
+                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+                      />
+                    </svg>
+                  </div>
+                  </Link>
+                </li>
+
+                <li className="nav-item mb-4">
+                  <Link to='/' style={{textDecoration: 'none', color: 'black'}}>
+                  <div
+                    className="d-flex justify-content-between align-items-center ms-4"
+                  >
+                    <h5 className='pt-1'>
+                      Settings
+                    </h5>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-chevron-right"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        stroke="black"
+                        strokeWidth="1"
+                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+                      />
+                    </svg>
+                  </div>
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link to='/' style={{textDecoration: 'none', color: 'black'}}>
+                  <div
+                    className="d-flex justify-content-between align-items-center ms-4"
+                  >
+                    <h5 className='pt-1' style={{color: '#DE8667'}}>
+                      Logout
+                    </h5>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-chevron-right"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        stroke="#DE8667"
+                        strokeWidth="1"
+                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+                      />
+                    </svg>
+                  </div>
+                  </Link>
+                </li>
+                </>
+                :
+                <>
                 <li className="nav-item">
                   <Link to='/' style={{textDecoration: 'none', color: 'black'}}>
                   <div
@@ -95,6 +296,8 @@ function Navbar() {
                 <li className="nav-item">
                   <Link to='/login' className='btn border-2 rounded-pill container-fluid mt-3' style={{borderColor: '#EFB467', color: '#EFB467'}}>Login</Link>
                 </li>
+                </>
+                }
               </ul>
             </div>
           </div>
