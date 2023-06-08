@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-function NavbarLogin() {
+function NavbarRegister() {
   return (
     <>
 
@@ -14,7 +14,7 @@ function NavbarLogin() {
           <div className="navbar" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link to='/register' className='btn rounded-pill px-5 shadow-sm' style={{backgroundColor: '#DE8667', color: 'white'}}>Sign up</Link>
+                <Link to='/login' className='btn border-2 rounded-pill ms-4 px-5 shadow-sm' style={{borderColor: '#EFB467', color: '#EFB467'}}>Login</Link>
               </li>
             </ul>
           </div>
@@ -103,4 +103,4 @@ function NavbarLogin() {
   )
 }
 
-export default NavbarLogin
+export default NavbarRegister
