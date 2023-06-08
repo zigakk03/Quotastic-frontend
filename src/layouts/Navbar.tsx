@@ -236,7 +236,7 @@ function Navbar() {
                 </li>
 
                 <li className="nav-item">
-                  <Link to='/' style={{textDecoration: 'none', color: 'black'}}>
+                  <Link to='/' onClick={logoutUser} style={{textDecoration: 'none', color: 'black'}}>
                   <div
                     className="d-flex justify-content-between align-items-center ms-4"
                   >
