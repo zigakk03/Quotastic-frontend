@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import Quote_card from './Quote_card'
+import QuoteCard from './QuoteCard'
 
 interface Quote {
     text: string;
@@ -11,18 +11,22 @@ interface Quote {
     liked: boolean;
   }
 
-function Upvoted_quotes(props: any) {
+function RescentQuotes(props: any) {
   
   const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [lastPageErr, setLastPageErr] = useState(false)
 
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        await axios.get(`http://localhost:8080/quotes/${props.page}`,
+        await axios.get(`http://localhost:8080/quotes/date/${props.page}`,
         {
           withCredentials: true
         }
         ).then((response)=>{
+          if (response.data.data.length <= 0) {
+            setLastPageErr(true)
+          } else {
           let allQuotes = []
           for (let i = 0; i < response.data.data.length; i++) {
               const element = {
@@ -35,11 +39,14 @@ function Upvoted_quotes(props: any) {
               }
               allQuotes.push(element)
           }
-          setQuotes(allQuotes)
+          setQuotes(allQuotes)}
         })
       } catch (error) {
-        await axios.get(`http://localhost:8080/quotes/${props.page}`,
+        await axios.get(`http://localhost:8080/quotes/date/${props.page}`,
         ).then((response)=>{
+          if (response.data.data.length <= 0) {
+            setLastPageErr(true)
+          } else {
           let allQuotes = []
           for (let i = 0; i < response.data.data.length; i++) {
               const element = {
@@ -53,41 +60,47 @@ function Upvoted_quotes(props: any) {
               allQuotes.push(element)
           }
           setQuotes(allQuotes)
+        }
         })
       }
     }
 
     fetchQuotes()
-  }, [])
+  }, [props.page])
   
 
   return (
     <>
     <div className='text-center'>
-        <h4 style={{color: '#DE8667'}}>Most upvoted quotes</h4>
-        <p>Most upvoted quotes on the platform. Sign up or login to like the quotes and keep them saved in your profile</p>
+        <h4 style={{color: '#DE8667'}}>Most recent quotes</h4>
+        <p>Recent quotes updates as soon user adds new quote. Go ahed show them that you seen the new quote and like the ones you like.</p>
     </div>
     <div className='container'>
         <div className="row">
             <div className="col-lg-4">
                 {quotes.slice(0, 3).map((quote) => (
-                    <Quote_card key={quote.id} quote={quote} />
+                    <QuoteCard key={quote.id} quote={quote} />
                 ))}
             </div>
             <div className="col-lg-4">
                 {quotes.slice(3, 6).map((quote) => (
-                    <Quote_card key={quote.id} quote={quote} />
+                    <QuoteCard key={quote.id} quote={quote} />
                 ))}
             </div>
             <div className="col-lg-4">
                 {quotes.slice(6, 9).map((quote) => (
-                    <Quote_card key={quote.id} quote={quote} />
+                    <QuoteCard key={quote.id} quote={quote} />
                 ))}
             </div>
         </div>
     </div>
+    {lastPageErr && 
+    <div className="alert alert-warning text-center" role="alert">
+      There are no more quotes to show!
+    </div>
+    }
     </>
   )
 }
 
-export default Upvoted_quotes
+export default RescentQuotes

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
-function Quote_card(props: any) {
+function QuoteCard(props: any) {
 
   const [avatar, setAvatar] = useState('')
   const [isImage, setIsImage] = useState(false)
@@ -120,7 +120,7 @@ function Quote_card(props: any) {
           </button>
         </div>
         <div>
-        <p>{props.quote.text}</p>
+        <p style={{minHeight: '50px'}}>{props.quote.text}</p>
         <div className='d-flex'>
         {
           isImage ?
@@ -152,4 +152,4 @@ function Quote_card(props: any) {
   )
 }
 
-export default Quote_card
+export default QuoteCard

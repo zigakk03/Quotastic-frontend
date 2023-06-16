@@ -27,7 +27,7 @@ function Navbar() {
         Cookies.remove(cookie);})
         setLogoutError(false);
         window.location.reload();
-      }, 5000);
+      }, 3000);
     }
   }
 
