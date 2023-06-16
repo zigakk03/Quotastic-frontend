@@ -22,8 +22,12 @@ function Navbar() {
     } catch (error) {
       setLogoutError(true)
       setTimeout(() => {
+        const cookies = Object.keys(Cookies.get());
+        cookies.forEach((cookie) => {
+        Cookies.remove(cookie);})
         setLogoutError(false);
-      }, 5000);
+        window.location.reload();
+      }, 3000);
     }
   }
 
