@@ -1,5 +1,5 @@
-import NavbarRegister from '../layouts/Navbar-register';
-import Footer from '../layouts/Footer';
+import NavbarRegister from '../components/Navbar-register';
+import Footer from '../components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import Axios from 'axios';

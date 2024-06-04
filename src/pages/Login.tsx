@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Footer from '../layouts/Footer';
-import NavbarLogin from '../layouts/Navbar-login';
+import Footer from '../components/Footer';
+import NavbarLogin from '../components/Navbar-login';
 import { Link, useNavigate } from 'react-router-dom';
 import Axios from 'axios'
 import Cookies from 'js-cookie';

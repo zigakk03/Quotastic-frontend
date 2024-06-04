@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import Footer from '../layouts/Footer'
-import Navbar from '../layouts/Navbar'
+import Footer from '../components/Footer'
+import Navbar from '../components/Navbar'
 import Landing_page from '../layouts/Landing_page'
 import Cookies from 'js-cookie'
 import Landing_page_logged_in from '../layouts/Landing_page-logged_in'

@@ -7,6 +7,7 @@ interface Quote {
     likes: number;
     username: string;
     avatar: string;
+    user_id: string;
     id: string;
     liked: boolean;
   }
@@ -22,11 +23,14 @@ function RandomQuote() {
                 'http://localhost:8080/quotes/random',
                 {withCredentials: true}).then((response) =>
                 {
+                    console.log(response);
+                    
                     const randomQuote = {
                         text: response.data.quote.text,
                         likes: response.data.likes_number,
                         username: response.data.user.user_name,
                         avatar: response.data.user.avatar,
+                        user_id: response.data.user.user_id,
                         id: response.data.quote.id,
                         liked: response.data.activeUserLiked
                     }
@@ -47,6 +51,7 @@ function RandomQuote() {
                   likes: response.data.likes_number,
                   username: response.data.user.user_name,
                   avatar: response.data.user.avatar,
+                  user_id: response.data.user.user_id,
                   id: response.data.quote.id,
                   liked: response.data.activeUserLiked
               }

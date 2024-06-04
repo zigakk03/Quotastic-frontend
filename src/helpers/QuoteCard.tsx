@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function QuoteCard(props: any) {
 
@@ -22,7 +23,7 @@ function QuoteCard(props: any) {
         } else if (response.data.liked === null) {
           setNumLikes(numLikes-1)
         } else {
-          setNumLikes(+1)
+          setNumLikes(numLikes+1)
         }
         setIsLiked(response.data.liked);
       }).catch((response) => {
@@ -52,7 +53,7 @@ function QuoteCard(props: any) {
           } else if (response.data.liked === null) {
             setNumLikes(numLikes+1)
           } else {
-            setNumLikes(-1)
+            setNumLikes(numLikes-1)
           }
           setIsLiked(response.data.liked)
         }).catch((response) => {
@@ -100,7 +101,7 @@ function QuoteCard(props: any) {
           <button className='btn' onClick={handleUpvote}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-up" viewBox="0 0 16 16">
               {
-              isLiked === true ? 
+              isLiked === true ?
               <path color='#DE8667' fillRule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
               :
               <path fillRule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
@@ -111,7 +112,7 @@ function QuoteCard(props: any) {
           <button className='btn' onClick={handleDownvote}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-down" viewBox="0 0 16 16">
               {
-              isLiked === false ? 
+              isLiked === false ?
               <path color='#DE8667' fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
               :
               <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
@@ -121,18 +122,17 @@ function QuoteCard(props: any) {
         </div>
         <div>
         <p style={{minHeight: '50px'}}>{props.quote.text}</p>
+        <Link to={`/user/${props.quote.user_id}`} style={{textDecoration: 'none', color: 'black'}}>
         <div className='d-flex'>
         {
           isImage ?
           <img src={avatar} alt="Avatar" className='rounded-circle me-1' style={{width: '24px', height: '24px'}} />
           :
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-person-circle me-1" viewBox="0 0 16 16">
-          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-          <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-          </svg>
+          <img src={require('../assets/No_profile_picture.png')} alt="Avatar" className='rounded-circle me-1' style={{width: '24px', height: '24px'}} />
         }
-        <p className='small pt-1'>{props.quote.username}</p>
+        <p className='small pt-1' >{props.quote.username}</p>
         </div>
+        </Link>
         </div>
         </div>
       </div>

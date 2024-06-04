@@ -1,14 +1,25 @@
 import Axios from 'axios'
 import Cookies from 'js-cookie'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import CreateQuote from "./CreateQuote";
 
 function Navbar() {
+  const [userUrl, setUserUrl] = useState("")
   const [userSigneIn, setUserSigneIn] = useState(false)
   const [avatar, setAvatar] = useState('')
   const [isImage, setIsImage] = useState(false)
   const [username, setUsername] = useState('')
   const [logoutError, setLogoutError] = useState(false)
+  const [showMakeQuote, setShowMakeQuote] = useState(false);
+
+  const openMakeQuote = () => {
+    setShowMakeQuote(true)
+  }
+
+  const closeMakeQuote = () => {
+    setShowMakeQuote(false);
+  }
 
   const logoutUser = async () => {
     try {
@@ -39,6 +50,7 @@ function Navbar() {
 
       const first_name = JSON.parse(user_cookie).first_name
       const last_name = JSON.parse(user_cookie).last_name
+      setUserUrl( `/user/${JSON.parse(user_cookie).id}`)
 
       if (first_name === '' || first_name === null || last_name === '' || last_name === null) {
         setUsername(JSON.parse(user_cookie).email)
@@ -77,6 +89,8 @@ function Navbar() {
       <></>
     }
 
+      <CreateQuote show={showMakeQuote} onClose={closeMakeQuote} />
+
 {/* other devices */}
     <div className="d-none d-md-block">
       <nav className="navbar navbar-expand px-5">
@@ -87,7 +101,7 @@ function Navbar() {
           <div className="navbar" id="navbarNav">
             <ul className="navbar-nav">
               {userSigneIn 
-              ? 
+              ?
               <>
                 <li className="nav-item pt-2">
                   <Link to='/' className='me-3' style={{textDecoration: 'none', color: '#DE8667'}}>Home</Link>
@@ -99,20 +113,23 @@ function Navbar() {
                   <Link to='/' onClick={logoutUser} className='me-4' style={{textDecoration: 'none', color: '#DE8667'}}>Logout</Link>
                 </li>
                 <li className="nav-item">
+                  <Link to={userUrl} >
                   {
                   isImage ?
                   <img src={avatar} alt="Avatar" className='rounded-circle me-1' style={{width: '40px', height: '40px'}} />
                   :
-                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-person-circle me-1" viewBox="0 0 16 16">
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                    <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                  </svg>
+                  <img src={require('../assets/No_profile_picture.png')} alt="Avatar" className='rounded-circle me-1' style={{width: '40px', height: '40px'}} />
                   }
+                  </Link>
                 </li>
                 <li className="nav-item">
+                  <a onClick={openMakeQuote} href='#'>
+                    <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-plus" viewBox="0 0 16 16">
                   <path color='#DE8667' d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                 </svg>
+                    </div>
+                  </a>
                 </li>
               </>
               :
@@ -177,10 +194,7 @@ function Navbar() {
                     isImage ?
                     <img src={avatar} alt="Avatar" className='rounded-circle me-4' style={{width: '40px', height: '40px'}} />
                     :
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-person-circle me-4" viewBox="0 0 16 16">
-                      <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                      <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                    </svg>
+                    <img src={require('../assets/No_profile_picture.png')} alt="Avatar" className='rounded-circle me-4' style={{width: '40px', height: '40px'}} />
                   }
                   <h5 className='pt-1'>{username}</h5>
                   </li>

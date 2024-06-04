@@ -7,6 +7,7 @@ interface Quote {
     likes: number;
     username: string;
     avatar: string;
+    user_id: string;
     id: string;
     liked: boolean;
   }
@@ -34,6 +35,7 @@ function UpvotedQuotes(props: any) {
                   likes: response.data.data[i].likes_number,
                   username: response.data.data[i].user.user_name,
                   avatar: response.data.data[i].user.avatar,
+                  user_id: response.data.data[i].user.user_id,
                   id: response.data.data[i].quote.id,
                   liked: response.data.data[i].activeUserLiked
               }
@@ -55,6 +57,7 @@ function UpvotedQuotes(props: any) {
                   likes: response.data.data[i].likes_number,
                   username: response.data.data[i].user.user_name,
                   avatar: response.data.data[i].user.avatar,
+                  user_id: response.data.data[i].user.user_id,
                   id: response.data.data[i].quote.id,
                   liked: response.data.data[i].activeUserLiked
               }
