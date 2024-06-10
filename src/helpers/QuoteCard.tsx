@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import EditQuote from "../components/EditQuote";
 
 function QuoteCard(props: any) {
 
@@ -13,6 +14,7 @@ function QuoteCard(props: any) {
   const [numLikes, setNumLikes] = useState<number>(props.quote.likes)
   const canEdit = props.edit;
   const userUrl = `/user/${props.quote.user_id}`;
+  const [showEditQuote, setShowEditQuote] = useState(false);
 
   const handleUpvote = async () => {    
     await axios.put(
@@ -110,6 +112,15 @@ function QuoteCard(props: any) {
     }, 10);
   }
 
+  const openEditQuote = () => {
+    setShowEditQuote(true)
+  }
+
+  const closeEditQuote = () => {
+    setShowEditQuote(false);
+    handleRefresh();
+  }
+
   return (
     <>
     <div className='card border-0 rounded-3 my-4' style={{boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.15)'}}>
@@ -155,7 +166,7 @@ function QuoteCard(props: any) {
           {canEdit?
               <>
                 <div style={{marginLeft: "auto"}} className='d-flex flex-column text-center justify-content-center pe-3'>
-                  <button className='btn'>
+                  <button className='btn' onClick={openEditQuote}>
                   <svg color='#DE8667'
                        xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -190,6 +201,7 @@ function QuoteCard(props: any) {
             Something went wrong!
           </div>
       }
+      <EditQuote show={showEditQuote} onClose={closeEditQuote} text={props.quote.text} qId={quoteId} />
     </>
   )
 }
