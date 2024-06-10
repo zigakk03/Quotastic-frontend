@@ -2,7 +2,7 @@ import {useState} from "react";
 import axios from "axios";
 
 // @ts-ignore
-function DeleteQuote({ show, onClose, qId}) {
+function DeleteQuote({ show, onClose, onCancel , qId}) {
 
     if (!show) {
         return null;
@@ -35,9 +35,6 @@ function DeleteQuote({ show, onClose, qId}) {
             }
     }
 
-    const handleClose = () => {
-        onClose();
-    }
 
     return (
         <>
@@ -52,7 +49,7 @@ function DeleteQuote({ show, onClose, qId}) {
                                 <h4 >Your <span style={{color: '#DE8667'}}>quote</span> was edited.</h4>
                             </div>
                             <div className="modal-footer pb-3 border-top-0" style={{justifyContent: "center"}}>
-                                <button onClick={handleClose} className="btn border-2 rounded-pill shadow-sm"
+                                <button onClick={onClose} className="btn border-2 rounded-pill shadow-sm"
                                         style={{
                                             backgroundColor: '#DE8667',
                                             color: 'white',
@@ -80,7 +77,7 @@ function DeleteQuote({ show, onClose, qId}) {
                                             padding: 'auto'
                                         }}>Delete
                                 </button>
-                                <button onClick={onClose} className="btn border-2 rounded-pill"
+                                <button onClick={onCancel} className="btn border-2 rounded-pill"
                                         style={{color: '322D38', width: 137}}>Cancel
                                 </button>
                             </div>

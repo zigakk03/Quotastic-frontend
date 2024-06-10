@@ -19,6 +19,12 @@ function Navbar() {
 
   const closeMakeQuote = () => {
     setShowMakeQuote(false);
+    setTimeout(() =>{
+      window.location.reload();
+    },10)
+  }
+  const cancelMakeQuote = () => {
+    setShowMakeQuote(false);
   }
 
   const logoutUser = async () => {
@@ -38,7 +44,7 @@ function Navbar() {
         Cookies.remove(cookie);})
         setLogoutError(false);
         window.location.reload();
-      }, 3000);
+      }, 2000);
     }
   }
 
@@ -89,7 +95,7 @@ function Navbar() {
       <></>
     }
 
-      <CreateQuote show={showMakeQuote} onClose={closeMakeQuote} />
+      <CreateQuote show={showMakeQuote} onClose={closeMakeQuote} onCancel={cancelMakeQuote} />
 
 {/* other devices */}
     <div className="d-none d-md-block">

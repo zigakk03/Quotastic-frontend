@@ -2,7 +2,7 @@ import {useState} from "react";
 import axios from "axios";
 
 // @ts-ignore
-function CreateQuote({ show, onClose }) {
+function CreateQuote({ show, onClose, onCancel }) {
 
     if (!show) {
         return null;
@@ -72,7 +72,7 @@ function CreateQuote({ show, onClose }) {
                             <button onClick={handleSubmit} className="btn border-2 rounded-pill shadow-sm"
                                     style={{backgroundColor: '#DE8667', color: 'white', width: 137, padding: 'auto'}}>Submit
                             </button>
-                            <button onClick={onClose} className="btn border-2 rounded-pill"
+                            <button onClick={onCancel} className="btn border-2 rounded-pill"
                                     style={{color: '322D38', width: 137}}>Cancel
                             </button>
                         </div>

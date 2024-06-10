@@ -21,6 +21,9 @@ function Navbar_user_page(props: any) {
             window.location.reload();
         }, 10);
     }
+    const cancelMakeQuote = () => {
+        setShowMakeQuote(false);
+    }
 
     const logoutUser = async () => {
         try {
@@ -94,7 +97,7 @@ function Navbar_user_page(props: any) {
                     </div>
                     </div>
                 </nav>
-                <CreateQuote show={showMakeQuote} onClose={closeMakeQuote} />
+                <CreateQuote show={showMakeQuote} onClose={closeMakeQuote} onCancel={cancelMakeQuote} />
                 </div>
 
                 {/* small devices */}

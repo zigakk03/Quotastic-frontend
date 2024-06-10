@@ -114,6 +114,7 @@ function QuoteCard(props: any) {
     }, 10);
   }
 
+  //edit quote
   const openEditQuote = () => {
     setShowEditQuote(true)
   }
@@ -122,7 +123,12 @@ function QuoteCard(props: any) {
     setShowEditQuote(false);
     handleRefresh();
   }
+  const cancelEditQuote = () => {
+    setShowEditQuote(false);
+  }
 
+
+  //delete quote
   const openDelQuote = () => {
     setShowDelQuote(true)
   }
@@ -130,6 +136,9 @@ function QuoteCard(props: any) {
   const closeDelQuote = () => {
     setShowDelQuote(false);
     handleRefresh();
+  }
+  const cancelDelQuote = () => {
+    setShowDelQuote(false);
   }
 
   return (
@@ -212,8 +221,8 @@ function QuoteCard(props: any) {
             Something went wrong!
           </div>
       }
-      <EditQuote show={showEditQuote} onClose={closeEditQuote} text={props.quote.text} qId={quoteId} />
-      <DeleteQuote show={showDelQuote} onClose={closeDelQuote} qId={quoteId} />
+      <EditQuote show={showEditQuote} onClose={closeEditQuote} onCancel={cancelEditQuote} text={props.quote.text} qId={quoteId} />
+      <DeleteQuote show={showDelQuote} onClose={closeDelQuote} onCancel={cancelDelQuote} qId={quoteId} />
     </>
   )
 }
