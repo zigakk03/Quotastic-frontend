@@ -10,7 +10,9 @@ function QuoteCard(props: any) {
   const [quoteId] = useState(props.quote.id)
   const [critErr, setCritErr] = useState(false)
   const [loginErr, setLoginErr] = useState(false)
-  const [numLikes, setNumLikes] = useState(props.quote.likes)
+  const [numLikes, setNumLikes] = useState<number>(props.quote.likes)
+  const canEdit = props.edit;
+  const userUrl = `/user/${props.quote.user_id}`;
 
   const handleUpvote = async () => {    
     await axios.put(
@@ -18,13 +20,19 @@ function QuoteCard(props: any) {
       undefined, 
       {withCredentials: true}
       ).then((response) => {
+        var updLikes = numLikes;
         if (response.data.liked === true && isLiked === false) {
-          setNumLikes(numLikes+2)
+          updLikes++;
+          updLikes++;
+          //setNumLikes(numLikes+2)
         } else if (response.data.liked === null) {
-          setNumLikes(numLikes-1)
+          updLikes--;
+          //setNumLikes(numLikes-1)
         } else {
-          setNumLikes(numLikes+1)
+          updLikes++;
+          //setNumLikes(numLikes+1)
         }
+        setNumLikes(updLikes);
         setIsLiked(response.data.liked);
       }).catch((response) => {
         if (response.response.status === 403) {
@@ -48,14 +56,19 @@ function QuoteCard(props: any) {
         undefined, 
         {withCredentials: true}
         ).then((response) => {
+          var updLikes = numLikes;
           if (response.data.liked === false && isLiked === true) {
-            setNumLikes(numLikes-2)
+            updLikes -= 2;
+            //setNumLikes(numLikes-2)
           } else if (response.data.liked === null) {
-            setNumLikes(numLikes+1)
+            updLikes++;
+            //setNumLikes(numLikes+1)
           } else {
-            setNumLikes(numLikes-1)
+            updLikes--;
+            //setNumLikes(numLikes-1)
           }
-          setIsLiked(response.data.liked)
+          setNumLikes(updLikes);
+          setIsLiked(response.data.liked);
         }).catch((response) => {
           if (response.response.status === 403) {
             setLoginErr(true)
@@ -90,7 +103,12 @@ function QuoteCard(props: any) {
   
   fetchAvatar();
   }, [])
-  
+
+  const handleRefresh = () => {
+    setTimeout(() => {
+      window.location.reload();
+    }, 10);
+  }
 
   return (
     <>
@@ -122,7 +140,7 @@ function QuoteCard(props: any) {
         </div>
         <div>
         <p style={{minHeight: '50px'}}>{props.quote.text}</p>
-        <Link to={`/user/${props.quote.user_id}`} style={{textDecoration: 'none', color: 'black'}}>
+        <Link onClick={handleRefresh} to={userUrl} style={{textDecoration: 'none', color: 'black'}}>
         <div className='d-flex'>
         {
           isImage ?
@@ -134,19 +152,43 @@ function QuoteCard(props: any) {
         </div>
         </Link>
         </div>
+          {canEdit?
+              <>
+                <div style={{marginLeft: "auto"}} className='d-flex flex-column text-center justify-content-center pe-3'>
+                  <button className='btn'>
+                  <svg color='#DE8667'
+                       xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                          d="M21 13v-2a1 1 0 0 0-1-1h-.757l-.707-1.707.535-.536a1 1 0 0 0 0-1.414l-1.414-1.414a1 1 0 0 0-1.414 0l-.536.535L14 4.757V4a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v.757l-1.707.707-.536-.535a1 1 0 0 0-1.414 0L4.929 6.343a1 1 0 0 0 0 1.414l.536.536L4.757 10H4a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h.757l.707 1.707-.535.536a1 1 0 0 0 0 1.414l1.414 1.414a1 1 0 0 0 1.414 0l.536-.535 1.707.707V20a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-.757l1.707-.708.536.536a1 1 0 0 0 1.414 0l1.414-1.414a1 1 0 0 0 0-1.414l-.535-.536.707-1.707H20a1 1 0 0 0 1-1Z"/>
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                          d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                  </svg>
+                  </button>
+                  <button className='btn'>
+                  <svg color='#DE8667'
+                       xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                          d="M6 18 17.94 6M18 18 6.06 6"/>
+                  </svg>
+                  </button>
+                </div>
+              </>
+              :
+              <></>
+          }
         </div>
       </div>
     </div>
-    {loginErr && 
-      <div className="alert alert-warning" role="alert" style={{marginTop: '-21px'}}>
-        You need to be signed in to upvote and downvote.
-      </div>
+      {loginErr &&
+          <div className="alert alert-warning" role="alert" style={{marginTop: '-21px'}}>
+            You need to be signed in to upvote and downvote.
+          </div>
       }
       {
-      critErr &&
-      <div className="alert alert-danger" role="alert" style={{marginTop: '-21px'}}>
-        Something went wrong!
-      </div>
+          critErr &&
+          <div className="alert alert-danger" role="alert" style={{marginTop: '-21px'}}>
+            Something went wrong!
+          </div>
       }
     </>
   )

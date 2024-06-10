@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom';
 import Navbar_user_page from '../components/Navbar-user_page';
 import QuoteCard from '../helpers/QuoteCard';
 import Footer from "../components/Footer";
+import Cookies from "js-cookie";
 
 interface Quote {
   text: string;
@@ -28,11 +29,17 @@ function UserPage(props: any) {
   const [recentQuotes, setRecentQuotes] = useState<Quote[]>([]);
   const [likedQuotes, setLikedQuotes] = useState<Quote[]>([]);
   const [errorLoadingUser, setErrorLoadingUser] = useState(false);
+  const [canEdit, setCanEdit] = useState(false);
+
+
 
   const paginatedUserInfo = async () => {
     // Fetch most liked quotes
     await axios
-      .get(`http://localhost:8080/quotes/user/${user_id}/mostliked/${page}`)
+      .get(`http://localhost:8080/quotes/user/${user_id}/mostliked/${page}`,
+          {
+        withCredentials: true
+      })
       .then((response) => {
         let tempMostLikedQuotes = [];
           for (let i = 0; i < response.data.data.length; i++) {
@@ -56,7 +63,10 @@ function UserPage(props: any) {
 
     // Fetch recent quotes
     await axios
-      .get(`http://localhost:8080/quotes/user/${user_id}/rescent/${page}`)
+      .get(`http://localhost:8080/quotes/user/${user_id}/rescent/${page}`,
+          {
+        withCredentials: true
+      })
       .then((response) => {
           let tempRecentQuotes = [];
           for (let i = 0; i < response.data.data.length; i++) {
@@ -80,7 +90,10 @@ function UserPage(props: any) {
 
     // Fetch liked quotes
     await axios
-      .get(`http://localhost:8080/quotes/user/${user_id}/liked/${page}`)
+      .get(`http://localhost:8080/quotes/user/${user_id}/liked/${page}`,
+          {
+            withCredentials: true
+          })
       .then((response) => {
           let tempLikedQuotes = [];
           for (let i = 0; i < response.data.data.length; i++) {
@@ -103,6 +116,7 @@ function UserPage(props: any) {
   }
 
   useEffect(() => {
+    //get user info
     const fetchUserInfo = async () => {
       axios.get(`http://localhost:8080/me/${user_id}`).then(
         (response) => {
@@ -132,11 +146,22 @@ function UserPage(props: any) {
       ).catch(()=>{
         setErrorLoadingUser(true);
       })
-      
       paginatedUserInfo();
     }
-  
     fetchUserInfo();
+
+
+    const user_cookie = Cookies.get('user_info')
+    if (user_cookie) {
+      const activeUserId = JSON.parse(user_cookie).id
+      if (activeUserId === user_id){
+        setCanEdit(true);
+      } else {
+        setCanEdit(false);
+      }
+    } else {
+      setCanEdit(false);
+    }
   }, [])
 
   const handleLoadMore = async () => {
@@ -151,9 +176,9 @@ function UserPage(props: any) {
             <Navbar_user_page isImage={isImage} avatar={avatar} username={username}
                               userId={user_id}/>
             {errorLoadingUser ?
-              <div className="alert alert-danger" role="alert">
-                Something went wrong! Try reloading the page.
-              </div> : <></>
+                <div className="alert alert-danger" role="alert">
+                  Something went wrong! Try reloading the page.
+                </div> : <></>
             }
             <div className='d-md-block d-none my-5 py-4'/>
             <div className='d-md-none d-block my-4'/>
@@ -184,18 +209,18 @@ function UserPage(props: any) {
             </div>
           </div>
 
-          <div className="container">
+          <div className="container" style={{minHeight: 323}}>
             <div className="row">
               <div className="col">
                 <h5 style={{color: '#DE8667'}}>Most liked quotes</h5>
                 {mostLikedQuotes && mostLikedQuotes.map((quote) => (
-                    <QuoteCard key={quote.id} quote={quote}/>
+                    <QuoteCard key={quote.id} quote={quote} edit={canEdit}/>
                 ))}
               </div>
               <div className="col">
                 <h5>Most recent</h5>
                 {recentQuotes && recentQuotes.map((quote) => (
-                    <QuoteCard key={quote.id} quote={quote}/>
+                    <QuoteCard key={quote.id} quote={quote} edit={canEdit}/>
                 ))}
               </div>
               <div className="col">
@@ -206,12 +231,15 @@ function UserPage(props: any) {
               </div>
             </div>
           </div>
+
+          <div className='d-flex justify-content-center pb-5 pt-2'>
+            <a onClick={handleLoadMore} className='btn border-2 rounded-pill px-5 shadow-sm'
+               style={{borderColor: '#EFB467', color: '#EFB467'}}>Load more</a>
+          </div>
         </div>
-        <div className='d-flex justify-content-center pb-5 pt-2'>
-          <a onClick={handleLoadMore} className='btn border-2 rounded-pill px-5 shadow-sm'
-             style={{borderColor: '#EFB467', color: '#EFB467'}}>Load more</a>
-        </div>
-        <Footer />
+
+
+        <Footer/>
       </>
   )
 }

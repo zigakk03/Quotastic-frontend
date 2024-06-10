@@ -1,6 +1,6 @@
 import  axios  from 'axios'
 import Cookies from 'js-cookie'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import CreateQuote from "./CreateQuote";
 
@@ -8,6 +8,8 @@ function Navbar_user_page(props: any) {
 
     const userUrl = `/user/${props.userId}`;
     const [showMakeQuote, setShowMakeQuote] = useState(false);
+    const [avatarLink, setAvatarLink] = useState('');
+    const [avatarIsImage, setAvatarIsImage] = useState(false);
 
     const openMakeQuote = () => {
         setShowMakeQuote(true)
@@ -34,6 +36,25 @@ function Navbar_user_page(props: any) {
         }
       }
 
+    useEffect(() => {
+        const userInfo = Cookies.get('user_info');
+        if (userInfo) {
+            try {
+                const user = JSON.parse(userInfo);
+                if (user.avatar === null){
+                    setAvatarIsImage(false);
+                } else {
+                    setAvatarLink(`http://localhost:8080/files/${user.avatar}`);
+                    setAvatarIsImage(true);
+                }
+            } catch (error) {
+                setAvatarIsImage(false);
+            }
+        } else {
+            setAvatarIsImage(false);
+        }
+    },[])
+
   return (
     <div className='container-fluid pt-md-3 p-0' style={{minHeight: '88px'}}>
             <div className="d-none d-md-block">
@@ -56,8 +77,8 @@ function Navbar_user_page(props: any) {
                         <li className="nav-item">
                             <Link to={userUrl} >
                         {
-                        props.isImage ?
-                        <img src={props.avatar} alt="Avatar" className='rounded-circle me-1' style={{width: '40px', height: '40px'}} />
+                        avatarIsImage ?
+                        <img src={avatarLink} alt="Avatar" className='rounded-circle me-1' style={{width: '40px', height: '40px'}} />
                         :
                         <img src={require('../assets/No_profile_picture.png')} alt="Avatar" className='rounded-circle me-1' style={{width: '40px', height: '40px'}} />
                         }
