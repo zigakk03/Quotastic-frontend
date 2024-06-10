@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import EditQuote from "../components/EditQuote";
+import DeleteQuote from "../components/DeleteQuote";
 
 function QuoteCard(props: any) {
 
@@ -15,6 +16,7 @@ function QuoteCard(props: any) {
   const canEdit = props.edit;
   const userUrl = `/user/${props.quote.user_id}`;
   const [showEditQuote, setShowEditQuote] = useState(false);
+  const [showDelQuote, setShowDelQuote] = useState(false);
 
   const handleUpvote = async () => {    
     await axios.put(
@@ -121,6 +123,15 @@ function QuoteCard(props: any) {
     handleRefresh();
   }
 
+  const openDelQuote = () => {
+    setShowDelQuote(true)
+  }
+
+  const closeDelQuote = () => {
+    setShowDelQuote(false);
+    handleRefresh();
+  }
+
   return (
     <>
     <div className='card border-0 rounded-3 my-4' style={{boxShadow: '0px 0px 8px rgba(0, 0, 0, 0.15)'}}>
@@ -175,7 +186,7 @@ function QuoteCard(props: any) {
                           d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                   </svg>
                   </button>
-                  <button className='btn'>
+                  <button className='btn' onClick={openDelQuote}>
                   <svg color='#DE8667'
                        xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -202,6 +213,7 @@ function QuoteCard(props: any) {
           </div>
       }
       <EditQuote show={showEditQuote} onClose={closeEditQuote} text={props.quote.text} qId={quoteId} />
+      <DeleteQuote show={showDelQuote} onClose={closeDelQuote} qId={quoteId} />
     </>
   )
 }

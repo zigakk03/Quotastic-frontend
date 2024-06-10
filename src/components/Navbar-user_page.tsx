@@ -17,6 +17,9 @@ function Navbar_user_page(props: any) {
 
     const closeMakeQuote = () => {
         setShowMakeQuote(false);
+        setTimeout(() => {
+            window.location.reload();
+        }, 10);
     }
 
     const logoutUser = async () => {
