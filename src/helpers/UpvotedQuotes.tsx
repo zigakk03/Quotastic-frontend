@@ -20,7 +20,8 @@ function UpvotedQuotes(props: any) {
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        await axios.get(`http://localhost:8080/quotes/${props.page}`,
+        // noinspection DuplicatedCode
+          await axios.get(`http://localhost:8080/quotes/${props.page}`,
         {
           withCredentials: true
         }
@@ -45,7 +46,8 @@ function UpvotedQuotes(props: any) {
           }
         })
       } catch (error) {
-        await axios.get(`http://localhost:8080/quotes/${props.page}`,
+        // noinspection DuplicatedCode
+          await axios.get(`http://localhost:8080/quotes/${props.page}`,
         ).then((response)=>{
           if (response.data.data.length <= 0) {
             setLastPageErr(true)
@@ -69,7 +71,8 @@ function UpvotedQuotes(props: any) {
       }
     }
 
-    fetchQuotes()
+    // noinspection JSIgnoredPromiseFromCall
+      fetchQuotes()
   }, [props.page])
   
 

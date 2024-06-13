@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -24,8 +25,8 @@ function QuoteCard(props: any) {
       undefined, 
       {withCredentials: true}
       ).then((response) => {
-        var updLikes = numLikes;
-        if (response.data.liked === true && isLiked === false) {
+      let updLikes = numLikes;
+      if (response.data.liked === true && isLiked === false) {
           updLikes++;
           updLikes++;
           //setNumLikes(numLikes+2)
@@ -60,8 +61,8 @@ function QuoteCard(props: any) {
         undefined, 
         {withCredentials: true}
         ).then((response) => {
-          var updLikes = numLikes;
-          if (response.data.liked === false && isLiked === true) {
+        let updLikes = numLikes;
+        if (response.data.liked === false && isLiked === true) {
             updLikes -= 2;
             //setNumLikes(numLikes-2)
           } else if (response.data.liked === null) {
@@ -102,10 +103,11 @@ function QuoteCard(props: any) {
       img.onerror = () => {
         setIsImage(false);
       };
-    };
+    }
   }
   
-  fetchAvatar();
+  // noinspection JSIgnoredPromiseFromCall
+    fetchAvatar();
   }, [])
 
   const handleRefresh = () => {

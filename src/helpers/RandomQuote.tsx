@@ -62,7 +62,8 @@ function RandomQuote() {
           })
       }
 
-      FetchRandomQuote()
+      // noinspection JSIgnoredPromiseFromCall
+        FetchRandomQuote()
     }, [])
     
 

@@ -25,8 +25,10 @@ function Home() {
       <Navbar />
         {
         userSigneIn ?
+            // eslint-disable-next-line react/jsx-pascal-case
         <Landing_page_logged_in />
         :
+            // eslint-disable-next-line react/jsx-pascal-case
         <Landing_page />
         }
       <Footer />

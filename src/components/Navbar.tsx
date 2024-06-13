@@ -1,8 +1,10 @@
+/* eslint-disable */
 import Axios from 'axios'
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import CreateQuote from "./CreateQuote";
+import ProfileSettings from "./ProfileSettings";
 
 function Navbar() {
   const [userUrl, setUserUrl] = useState("")
@@ -12,7 +14,9 @@ function Navbar() {
   const [username, setUsername] = useState('')
   const [logoutError, setLogoutError] = useState(false)
   const [showMakeQuote, setShowMakeQuote] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
+  //make quote
   const openMakeQuote = () => {
     setShowMakeQuote(true)
   }
@@ -26,6 +30,22 @@ function Navbar() {
   const cancelMakeQuote = () => {
     setShowMakeQuote(false);
   }
+
+  //userSettings
+  const openSettings = () => {
+    setShowSettings(true)
+  }
+
+  const closeSettings = () => {
+    setShowSettings(false);
+    setTimeout(() =>{
+      window.location.reload();
+    },10)
+  }
+  const cancelSettings = () => {
+    setShowSettings(false);
+  }
+
 
   const logoutUser = async () => {
     try {
@@ -77,13 +97,14 @@ function Navbar() {
         img.onerror = () => {
           setIsImage(false);
         };
-      };
+      }
     } else {
       setUserSigneIn(false)
     }
   }, [])
   
 
+  // noinspection JSRemoveUnnecessaryParentheses
   return (
     <>
     {
@@ -96,6 +117,7 @@ function Navbar() {
     }
 
       <CreateQuote show={showMakeQuote} onClose={closeMakeQuote} onCancel={cancelMakeQuote} />
+      <ProfileSettings show={showSettings} onClose={closeSettings} onCancel={cancelSettings} />
 
 {/* other devices */}
     <div className="d-none d-md-block">
@@ -113,7 +135,7 @@ function Navbar() {
                   <Link to='/' className='me-3' style={{textDecoration: 'none', color: '#DE8667'}}>Home</Link>
                 </li>
                 <li className="nav-item pt-2">
-                  <Link to='/' className='me-3' style={{textDecoration: 'none', color: '#DE8667'}}>Settings</Link>
+                  <a href="#" onClick={openSettings} className='me-3' style={{textDecoration: 'none', color: '#DE8667'}}>Settings</a>
                 </li>
                 <li className="nav-item pt-2">
                   <Link to='/' onClick={logoutUser} className='me-4' style={{textDecoration: 'none', color: '#DE8667'}}>Logout</Link>
@@ -153,6 +175,12 @@ function Navbar() {
         </div>
       </nav>
     </div>
+
+
+
+
+
+
 
     {/* small devices */}
     <div className="d-block d-md-none">

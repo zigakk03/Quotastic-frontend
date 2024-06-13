@@ -3,6 +3,7 @@ import Cookies from 'js-cookie'
 import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom'
 import CreateQuote from "./CreateQuote";
+import ProfileSettings from "./ProfileSettings";
 
 function Navbar_user_page(props: any) {
 
@@ -10,6 +11,7 @@ function Navbar_user_page(props: any) {
     const [showMakeQuote, setShowMakeQuote] = useState(false);
     const [avatarLink, setAvatarLink] = useState('');
     const [avatarIsImage, setAvatarIsImage] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
 
     const openMakeQuote = () => {
         setShowMakeQuote(true)
@@ -23,6 +25,22 @@ function Navbar_user_page(props: any) {
     }
     const cancelMakeQuote = () => {
         setShowMakeQuote(false);
+    }
+
+
+    //userSettings
+    const openSettings = () => {
+        setShowSettings(true)
+    }
+
+    const closeSettings = () => {
+        setShowSettings(false);
+        setTimeout(() =>{
+            window.location.reload();
+        },10)
+    }
+    const cancelSettings = () => {
+        setShowSettings(false);
     }
 
     const logoutUser = async () => {
@@ -75,7 +93,7 @@ function Navbar_user_page(props: any) {
                             <Link to='/' className='me-3' style={{textDecoration: 'none', color: 'white'}}>Home</Link>
                         </li>
                         <li className="nav-item pt-2">
-                            <Link to='/' className='me-3' style={{textDecoration: 'none', color: 'white'}}>Settings</Link>
+                            <a href="#" onClick={openSettings} className='me-3' style={{textDecoration: 'none', color: 'white'}}>Settings</a>
                         </li>
                         <li className="nav-item pt-2">
                             <Link to='/' onClick={logoutUser} className='me-4' style={{textDecoration: 'none', color: 'white'}}>Logout</Link>
@@ -98,6 +116,7 @@ function Navbar_user_page(props: any) {
                     </div>
                 </nav>
                 <CreateQuote show={showMakeQuote} onClose={closeMakeQuote} onCancel={cancelMakeQuote} />
+                <ProfileSettings show={showSettings} onClose={closeSettings} onCancel={cancelSettings} />
                 </div>
 
                 {/* small devices */}

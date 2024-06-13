@@ -166,7 +166,7 @@ function Register() {
                 <label htmlFor="exampleInputFirstName" className="form-label small">First Name</label>
                 <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder='John' className="form-control px-4 rounded-pill border-2" id="exampleInputEmail1" aria-describedby="emailHelp" style={{borderColor: '#EFB467'}} />
               </div>
-              <div className="container-fluid mb-3"style={{paddingRight: '0'}} >
+              <div className="container-fluid mb-3" style={{paddingRight: '0'}} >
                 <label htmlFor="exampleInputLastName" className="form-label small">Last Name</label>
                 <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder='Scott' className="form-control px-4 rounded-pill border-2" id="exampleInputEmail1" aria-describedby="emailHelp" style={{borderColor: '#EFB467'}} />
               </div>

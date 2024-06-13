@@ -20,7 +20,8 @@ function RescentQuotes(props: any) {
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        await axios.get(`http://localhost:8080/quotes/date/${props.page}`,
+        // noinspection DuplicatedCode
+          await axios.get(`http://localhost:8080/quotes/date/${props.page}`,
         {
           withCredentials: true
         }
@@ -44,7 +45,8 @@ function RescentQuotes(props: any) {
           setQuotes(allQuotes)}
         })
       } catch (error) {
-        await axios.get(`http://localhost:8080/quotes/date/${props.page}`,
+        // noinspection DuplicatedCode
+          await axios.get(`http://localhost:8080/quotes/date/${props.page}`,
         ).then((response)=>{
           if (response.data.data.length <= 0) {
             setLastPageErr(true)
@@ -68,7 +70,8 @@ function RescentQuotes(props: any) {
       }
     }
 
-    fetchQuotes()
+    // noinspection JSIgnoredPromiseFromCall
+      fetchQuotes()
   }, [props.page])
   
 

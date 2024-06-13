@@ -46,7 +46,7 @@ function DeleteQuote({ show, onClose, onCancel , qId}) {
             {quoteDelModalShow ?
                 <>
                             <div className="modal-header border-bottom-0 pb-0 justify-content-center">
-                                <h4 >Your <span style={{color: '#DE8667'}}>quote</span> was edited.</h4>
+                                <h4 >Your <span style={{color: '#DE8667'}}>quote</span> was deleted.</h4>
                             </div>
                             <div className="modal-footer pb-3 border-top-0" style={{justifyContent: "center"}}>
                                 <button onClick={onClose} className="btn border-2 rounded-pill shadow-sm"

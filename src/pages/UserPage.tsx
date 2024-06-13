@@ -1,3 +1,6 @@
+/* eslint-disable */
+// noinspection DuplicatedCode
+
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import {useParams} from 'react-router-dom';
@@ -16,7 +19,7 @@ interface Quote {
   liked: boolean;
 }
 
-function UserPage(props: any) {
+function UserPage() {
 
   const { user_id } = useParams();
   const [avatar, setAvatar] = useState('');
@@ -132,7 +135,7 @@ function UserPage(props: any) {
             img.onerror = () => {
               setIsImage(false);
             };
-          };
+          }
 
           if (response.data.user.first_name === '' || response.data.user.first_name === null || response.data.user.last_name === '' || response.data.user.last_name === null) {
             setUsername(response.data.user.email);
@@ -146,8 +149,9 @@ function UserPage(props: any) {
       ).catch(()=>{
         setErrorLoadingUser(true);
       })
-      paginatedUserInfo();
+      await paginatedUserInfo();
     }
+    // noinspection JSIgnoredPromiseFromCall
     fetchUserInfo();
 
 
